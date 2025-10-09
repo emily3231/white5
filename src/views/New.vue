@@ -1,273 +1,80 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import html2canvas from 'html2canvas'
 
-// 各區元件
-import KV from '../components/KV.vue'
-import Part2 from '../components/Part2.vue'
-import Part22 from '../components/Part22.vue'
-import Part31 from '../components/Part31.vue'
-import Part32 from '../components/Part32.vue'
-import Part33 from '../components/Part33.vue'
-import Part35 from '../components/Part35.vue'
-import Part4 from '../components/Part4.vue'
+// 截圖自己頁面
+const captureScreenshot = async () => {
+  const target = document.querySelector('.capture-area')
+  if (!target) {
+    alert('找不到截圖區塊')
+    return
+  }
 
-const sections = ref([])
-const currentIndex = ref(0)
-const unlocked = ref(false)
-let isScrolling = false
-let scrollReleased = false // ✅ 新增狀態：是否已完全解除滾輪鎖定
+  const canvas = await html2canvas(target, { useCORS: true, scale: 2 })
+  const dataUrl = canvas.toDataURL('image/jpeg', 0.9)
 
-// 🔒 初始鎖定所有滾動操作
-function preventDefault(e) {
-  e.preventDefault()
-}
-function preventKeyScroll(e) {
-  const keys = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' ']
-  if (keys.includes(e.key)) e.preventDefault()
+  const link = document.createElement('a')
+  link.href = dataUrl
+  link.download = 'my_screenshot.jpg'
+  link.click()
 }
 
-// ✅ 平滑滾動到指定區塊（暫時解除 → 完成後恢復）
-function scrollToSection(index) {
-  const target = sections.value[index]
-  if (!target) return
+// 分享網址
+const shareResult = async () => {
+  const shareUrl = 'https://your-result-page.com' // ← 你想分享的網址
+  const shareTitle = '我的成果頁'
+  const shareText = '快來看看我的成果！'
 
-  // 暫時解除滾輪事件，避免動畫干擾
-  window.removeEventListener('wheel', handleScroll, { passive: false })
-  target.scrollIntoView({ behavior: 'smooth' })
-
-  // 🕒 約 1 秒後恢復滾輪控制（除非到最後一區）
-  setTimeout(() => {
-    if (!scrollReleased && unlocked.value && currentIndex.value < sections.value.length - 1) {
-      window.addEventListener('wheel', handleScroll, { passive: false })
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: shareTitle,
+        text: shareText,
+        url: shareUrl
+      })
+      console.log('分享成功')
+    } catch (err) {
+      console.log('使用者取消或分享失敗', err)
     }
-  }, 1000)
-}
-
-// 🌀 滾輪控制（上下切換）
-function handleScroll(e) {
-  if (!unlocked.value || scrollReleased) return // 若尚未解鎖或已釋放自由滾動則忽略
-  e.preventDefault()
-  if (isScrolling) return
-  isScrolling = true
-
-  if (e.deltaY > 0) {
-    currentIndex.value = Math.min(currentIndex.value + 1, sections.value.length - 1)
   } else {
-    currentIndex.value = Math.max(currentIndex.value - 1, 0)
-  }
-
-  scrollToSection(currentIndex.value)
-
-  // ✅ 若滾到最後一區 → 自動解除滾輪鎖定
-  if (currentIndex.value === sections.value.length - 1) {
-    releaseScrollLock()
-  }
-
-  setTimeout(() => (isScrolling = false), 800)
-}
-
-// 🔓 解鎖滾輪 → 開啟分段滾動
-function unlockScroll() {
-  if (unlocked.value) return
-  unlocked.value = true
-
-  // 移除初始鎖定
-  window.removeEventListener('wheel', preventDefault, { passive: false })
-  window.removeEventListener('touchmove', preventDefault, { passive: false })
-  window.removeEventListener('keydown', preventKeyScroll, { passive: false })
-
-  // 啟用滾輪控制
-  window.addEventListener('wheel', handleScroll, { passive: false })
-
-  // 自動滾到第2區
-  currentIndex.value = 1
-  scrollToSection(currentIndex.value)
-}
-
-// ⏭ 下一步按鈕控制滾動
-function nextSection() {
-  if (currentIndex.value < sections.value.length - 1) {
-    currentIndex.value++
-    scrollToSection(currentIndex.value)
-    // 到最後一區也要釋放滾輪
-    if (currentIndex.value === sections.value.length - 1) {
-      releaseScrollLock()
-    }
-  }
-}
-
-// ✅ 解除所有滾輪鎖定 → 可自由滾動
-function releaseScrollLock() {
-  if (scrollReleased) return
-  scrollReleased = true
-  window.removeEventListener('wheel', handleScroll, { passive: false })
-  window.removeEventListener('keydown', preventKeyScroll, { passive: false })
-  console.log('🟢 已到最後一區，自由滾動已開啟')
-}
-
-// 掛載 / 卸載事件
-onMounted(() => {
-  sections.value = Array.from(document.querySelectorAll('.section'))
-  // 初始完全鎖定滾輪
-  window.addEventListener('wheel', preventDefault, { passive: false })
-  window.addEventListener('touchmove', preventDefault, { passive: false })
-  window.addEventListener('keydown', preventKeyScroll, { passive: false })
-})
-onBeforeUnmount(() => {
-  // 清理所有事件
-  window.removeEventListener('wheel', preventDefault, { passive: false })
-  window.removeEventListener('touchmove', preventDefault, { passive: false })
-  window.removeEventListener('keydown', preventKeyScroll, { passive: false })
-  window.removeEventListener('wheel', handleScroll, { passive: false })
-})
-
-// 圖片互動部分（原封不動）
-const images = [
-  new URL('../assets/images/alert_light.png', import.meta.url).href,
-  new URL('../assets/images/alert.png', import.meta.url).href
-]
-const currentImage = ref(images[0])
-const isChanged = ref(false)
-
-function changeImageAndScroll() {
-  if (!isChanged.value) {
-    currentImage.value = images[1]
-    isChanged.value = true
-    setTimeout(() => {
-      const section = document.getElementById('section3')
-      if (section) section.scrollIntoView({ behavior: 'smooth' })
-    }, 500)
+    // 備用：瀏覽器不支援分享
+    await navigator.clipboard.writeText(shareUrl)
+    alert(`此瀏覽器不支援分享功能\n已自動複製連結：${shareUrl}`)
   }
 }
 </script>
 
 <template>
-  <main>
-    <!-- 第1區 -->
-    <section class="section all_warp" :style="{ background: colors[0] }">
-      <div class="content">
-        <KV />
-        <div class="grasscenter">
-          <button class="login_btn center" @click="unlockScroll" :disabled="unlocked">
-            <img src="../assets/images/login_btn.png" />
-          </button>
-          {{ unlocked ? '已啟動' : '往下探索' }}
-        </div>
-      </div>
-    </section>
-
-    <!-- 第2區 -->
-    <section class="section all_warp" :style="{ background: colors[0] }">
-      <div class="content">
-        <Part2 />
-        <div class="alarm center">
-          <transition name="fade" mode="out-in">
-            <img
-              :key="currentImage"
-              :src="currentImage"
-              alt="白白"
-              class="img"
-              @click="changeImageAndScroll"
-            />
-          </transition>
-        </div>
-        <!-- <button class="next-btn" @click="nextSection">下一步 ➜</button> -->
-      </div>
-    </section>
-
-    <!-- 第2-2區 -->
-    <section id="section3" class="section all_warp" :style="{ background: colors[1] }">
-      <div class="content">
-        <Part22 />
-        <button class="next-btn" @click="nextSection">下一步 ➜</button>
-      </div>
-    </section>
-
-    <!-- 第3～6區 -->
-    <div class="part3 text-center">
-      <section class="section all_warp" :style="{ background: colors[2] }">
-        <div class="content">
-          <Part31 />
-          <button class="next-btn" @click="nextSection">下一步 ➜</button>
-        </div>
-      </section>
-
-      <section class="section all_warp" :style="{ background: colors[2] }">
-        <div class="content">
-          <Part32 />
-          <button class="next-btn" @click="nextSection">下一步 ➜</button>
-        </div>
-      </section>
-
-      <section class="section all_warp" :style="{ background: colors[2] }">
-        <div class="content">
-          <Part33 />
-          <button class="next-btn" @click="nextSection">下一步 ➜</button>
-        </div>
-      </section>
-
-      <section class="section all_warp" :style="{ background: colors[2] }">
-        <div class="content">
-          <Part35 />
-          <button class="next-btn" @click="nextSection">下一步 ➜</button>
-        </div>
-      </section>
-
-      <!-- 第7區 -->
-      <section class="section all_warp" :style="{ background: colors[2] }">
-        <div class="content">
-          <Part4 />
-          <p>🎉 恭喜你滑完所有區塊！</p>
-        </div>
-      </section>
+  <div class="container">
+    <div class="btn-group">
+      <button @click="captureScreenshot">📸 儲存截圖</button>
+      <button @click="shareResult">🔗 分享結果</button>
     </div>
-  </main>
+
+    <div class="capture-area">
+      <h2>這是我的成果畫面</h2>
+      <p>點擊「儲存截圖」會將此區保存為 JPG。</p>
+      <img src="https://picsum.photos/400/200" alt="示意圖" />
+    </div>
+  </div>
 </template>
 
-<script>
-// 顏色定義
-const colors = [
-  'linear-gradient(135deg, #75C483, #75C483)',
-  'linear-gradient(135deg, #ECFF9E, #ECFF9E)',
-  'linear-gradient(135deg, #f5f5f5, #f5f5f5)'
-]
-</script>
-
 <style scoped>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-
-/* .section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+.container {
   text-align: center;
-} */
-
-
-button {
-  border: 0;
-  background: none;
-}
-.next-btn {
   margin-top: 40px;
-  background: #fff;
-  color: #333;
-  border-radius: 20px;
-  padding: 10px 25px;
+}
+.btn-group button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
   cursor: pointer;
-  font-size: 1rem;
-  transition: all 0.3s ease;
 }
-.next-btn:hover {
-  transform: scale(1.05);
-  background: #333;
-  color: #fff;
+.capture-area {
+  margin-top: 30px;
+  padding: 20px;
+  background: #f0f8ff;
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  display: inline-block;
 }
-
 </style>

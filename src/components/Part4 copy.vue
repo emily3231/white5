@@ -78,204 +78,102 @@ function shareResult() {
 </script>
 
 <template>
-  <div class="wrap">
-    <!-- 上方三個主題 -->
-    <div class="treasure-list">
-      <div
-        v-for="t in treasures"
-        :key="t.id"
-        class="treasure-item"
-      >
-        <img
-          :src="selectedId === t.id ? t.opened : t.closed"
-          :alt="t.label"
-          class="treasure-img"
-          @click="selectTreasure(t.id)"
-        />
+ <section class="part4 text-center">
+    <div class="p4_bg"><img src="@/assets/images/p4_bg.png" ></div>
 
-        <button
-          class="btn"
-          :class="{ active: selectedId === t.id }"
-          @click="selectTreasure(t.id)"
-        >
-          {{ selectedId === t.id ? '已打開：' + t.label : '打開 ' + t.label }}
-        </button>
+  
+    <div class="mx-auto mb-4 p4_area">
+        <div class="row center">
+            <div class="p4-rec pt-200">
+              <div class="row">
+                <div class="col-md-3 col-6 ">
+                  <p class="font24">我們認識了</p>
+                  <h2 class="font65">26<spnp class="font34">年</spnp></h2>
+                </div>
+                <div class="col-md-3 col-6">
+                  <p class="font24">防護力</p>
+                  <h2 class="font65">84<spnp  class="font34">％</spnp></h2>
+                </div>
+               <div class="col-md-3 col-6">
+                  <p class="font24">小數點累積</p>
+                  <h2 class="font65">101<spnp  class="font34">點</spnp></h2>
+                </div>
+               <div class="col-md-3 col-6">
+                  <p class="font24">FitBack健康吧</p>
+                  <h2 class="font65">426<spnp  class="font34">萬步</spnp></h2>
+                </div>
+              </div>
+            </div> 
+
+          <div class="p4-img"><img src="@/assets/images/p4_top.png" ></div> 
+
+          <div class="p4-rec mt-100 p-50">
+            <div>我的新年新願是...
+                <span class=" font-3 green-font">身體健康</span>
+           </div>
+
+          <select class="mt-3">
+              <option>健康是最大財富，讓白白陪你一起守護。</option>
+              <option>Dog</option>
+              <option>Cat</option>
+              <option>Hamster</option>
+              <option>Parrot</option>
+              <option>Spider</option>
+              <option>Goldfish</option>
+          </select>
+
+          <div class="mt-5">
+            <button class="green1_btn">儲存截圖</button>
+            <button class="green1_btn">分享結果</button>
+          </div> 
+
+          <p class="mt-5">想更全面照顧自己？ 點我了解 <span class="green-color">國泰健康管理 </span>→</p>
+          </div>
+
+          <div class="font16 mt-5 gray-color ">若您想了解更多服務、或是繼續探索國泰的守護旅程，<br>可以從這些管道找到我們</div>
+
+          <div class="p4-rec1 mt-5">
+            <div class="row">
+              <div class="col-4"> 
+                <img src="@/assets/images/b-logo1.png" >
+                <p class="mt-3 font12">
+                  FitBack健康吧<br>健康任務與步數挑戰
+                </p>
+              </div>
+              <div class="col-4">
+                <img src="@/assets/images/b-logo2.png" >
+                <p class="mt-3 font12">
+                  國泰人壽官網<br>查詢保單與保障內容
+                </p>
+              </div>
+              <div class="col-4">
+                
+                <img src="@/assets/images/b-logo3.png" >
+                <p class="mt-3 font12">
+                   國泰人壽App<br>一手掌握服務與通知
+                </p>
+              
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-5"><img src="@/assets/images/b-logo.png" ></div>
+
+          <div class="mt-5 footer font14">
+          <a href=""> 關於我們</a>  ｜  
+          <a href=""> 最新消息</a>  ｜  
+          <a href="">服務據點</a>  ｜  
+          <a href="">聯絡我們</a>
+          </div>
+
+
       </div>
-    </div>
-
-    <!-- 下方內容 -->
-    <transition name="fade" mode="out-in">
-      <div v-if="currentTreasure" class="text-box fade-in">
-        <!-- 對話框 1：願望 -->
-        <div class="bubble bubble-left">
-          <p>{{ currentTreasure.wish }}</p>
-        </div>
-
-        <!-- 對話框 2：主題內容 -->
-        <div class="bubble bubble-right">
-          <h3>{{ currentTreasure.title }}</h3>
-          <p>{{ currentTreasure.text }}</p>
-        </div>
-
-        <!-- 下拉選單 -->
-        <h4 class="dropdown-title">選一個祝福吧 💫</h4>
-        <select class="dropdown">
-          <option v-for="(b, i) in currentTreasure.blessings" :key="i">
-            {{ b }}
-          </option>
-        </select>
-
-        <!-- 兩顆按鈕 -->
-        <div class="bottom-btns">
-          <button class="action-btn" @click="saveScreenshot">📸 儲存截圖</button>
-          <button class="action-btn" @click="shareResult">📤 分享結果</button>
-        </div>
-      </div>
-    </transition>
   </div>
+
+</section>
+
 </template>
 
 <style scoped>
-.wrap {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px;
-  text-align: center;
-}
-
-.treasure-list {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  flex-wrap: wrap;
-  margin-bottom: 30px;
-}
-
-.treasure-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.treasure-img {
-  width: 200px;
-  height: 150px;
-  border-radius: 10px;
-  object-fit: cover;
-  border: 2px solid #ccc;
-  cursor: pointer;
-  transition: transform 0.3s, border-color 0.3s;
-}
-
-.treasure-img:hover {
-  transform: scale(1.05);
-  border-color: #3b82f6;
-}
-
-.btn {
-  padding: 10px 20px;
-  border-radius: 999px;
-  border: 1px solid #ccc;
-  background: white;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
-}
-.btn:hover {
-  background: #f3f4f6;
-}
-.btn.active {
-  background: #3b82f6;
-  color: white;
-  border-color: #3b82f6;
-}
-
-.text-box {
-  max-width: 600px;
-  margin: 0 auto;
-  background: #f8fafc;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-/* 對話框樣式 */
-.bubble {
-  position: relative;
-  display: inline-block;
-  padding: 15px 20px;
-  border-radius: 20px;
-  margin: 10px 0;
-  max-width: 80%;
-  text-align: left;
-  line-height: 1.5;
-}
-.bubble-left {
-  background: #e0f2fe;
-  align-self: flex-start;
-}
-.bubble-right {
-  background: #dbeafe;
-  align-self: flex-end;
-}
-.bubble-left::after {
-  content: '';
-  position: absolute;
-  left: -8px;
-  top: 15px;
-  border: 8px solid transparent;
-  border-right-color: #e0f2fe;
-}
-.bubble-right::after {
-  content: '';
-  position: absolute;
-  right: -8px;
-  top: 15px;
-  border: 8px solid transparent;
-  border-left-color: #dbeafe;
-}
-
-.dropdown-title {
-  font-weight: bold;
-  color: #1e3a8a;
-  margin-top: 15px;
-}
-
-.dropdown {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  margin: 10px 0 20px;
-}
-
-/* 兩顆底部按鈕 */
-.bottom-btns {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-.action-btn {
-  padding: 10px 20px;
-  border-radius: 25px;
-  border: none;
-  background: #2563eb;
-  color: #fff;
-  cursor: pointer;
-  font-size: 15px;
-  transition: 0.2s;
-}
-.action-btn:hover {
-  background: #1e40af;
-}
-
-/* 動畫 */
-.fade-in {
-  animation: fadeIn 0.4s ease-in-out;
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+select{ width: 100%;}
 </style>

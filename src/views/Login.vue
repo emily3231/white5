@@ -13,21 +13,24 @@ function goToHome() {
 <!-- 天空 -->
 <div class="sky_wrap">
   <img src="@/assets/images/p4_bg.png">
-
 </div>  
-<div class="bears center">
+
+<div class="login_wrap">
+  <div class="container ">
+<div class="bears_login">
+  
   <img src="@/assets/images/p4_top.png">
+
 </div>
 
 
   <div class="login_btn1" >
-
   <div class="center" > 
-  <div class="col-6">
-      <button @click="goToHome" class="btn">保戶：登入回顧</button>   
+  <div class="col-6 font-c font36">
+      <button @click="goToHome" class="btn_y">保戶</button>   
   </div> 
-  <div class="col-6"> 
-      <button @click="$router.push('/new')" class="btn">保戶：登入回顧</button>
+  <div class="col-6 font-c font36"> 
+      <button @click="$router.push('/new')" class="btn_y">非保戶</button>
   </div>
   </div>
 
@@ -35,14 +38,16 @@ function goToHome() {
 </div> 
 
 
-<div class="grasslower">
-<div class=" row">
-<div class="col-6 qrcode center"><img src="@/assets/images/qrcode.png"></div>
-<div class="col-6 logo2 center"><img src="@/assets/images/logo2.png"></div>
+<div class="grasslower1">
+  <div class=" row">
+  <div class="col-6 qrcode center"><img src="@/assets/images/qrcode.png"></div>
+  <div class="col-6 logo2 center"><img src="@/assets/images/logo2.png"></div>
+  </div>
 </div>
 </div> 
+</div>
 
- <div class="mt-5 mb-5 info container">
+<div class="mt-5 mb-5 info container ">
 <h2 style=" text-align: center; font-weight: bold; ">
     活動資訊<br><br><br>
 活動期間：民國（下同）115年2月1日起至115年4月30日止。<br>
@@ -81,33 +86,11 @@ function goToHome() {
 <style scoped>
 
 
-.bears img{ width: 80%; margin-top: -70%; }
 
-.login_btn1 {}
-.login_btn1 img{ width: 100%;}
 
-.login_btn1{
-  width: 500px;
-  z-index: 10; 
-   position: relative;
-  top: 50%;  
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  color: white;
-  margin-top: -150px;
-    margin-bottom: 100px;
-} 
-.btn{
-border-radius: 100px;
-border: 4px solid #FFF;
-background: #E9C461;
-color:white;
 
-}
-.btn:hover{
- opacity: 0.8;
-}
+
+
 
 
 </style>

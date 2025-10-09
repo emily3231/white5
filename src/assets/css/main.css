@@ -7,7 +7,43 @@ align-items: center; /* 垂直置中 */
   width: 100%;
 }
 
+.login_wrap{ 
+  position: relative;
+  margin-top: -500px; 
 
+}
+
+.login_btn1{
+  /* width: 80%; */
+  z-index: 10; 
+   position: relative;
+  top: 250px;  
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  margin-top: 50px;
+    margin-bottom: 100px;
+   
+} 
+
+.bears_login{ 
+
+  width: 80%;
+  position: absolute;
+top: -190px;
+bottom: 0;
+left: 0;
+right: 0;
+margin: auto; /* 自動分配空間 */
+
+}
+
+
+.bears_login img{
+    width: 100%;
+    
+} 
 .sky_wrap img{ width: 100%;}
 
 .bg-wrap img{ height: 900px;width: 100% } 
@@ -122,16 +158,29 @@ transform: translate(-50%, -50%);
 }
 .grasslower img{ width: 200px;}
 
+.grasslower1{
+position: absolute;
+top:450px;
+left: 50%;
+transform: translate(-50%, -50%);
+
+
+}
+.grasslower1 img{ width: 200px;}
+
 .grasscenter .black { color: black ; text-decoration: underline;}
 
-.info h2{ font-weight: 900;  font-size: 1.2rem; margin-top: 150px; margin-bottom: 50px;}
+.info h2{ font-weight: 900;  margin-top: 500px; font-size: 1.2rem; margin-bottom: 50px;}
 
 
 
 
 /**************1200**************/
 @media (max-width: 1200px) {
-/* body{ background: red;} */
+.login_btn1{ top: 320px;  }
+.bears_login{  top:30px;}
+.info h2{  margin-top: 480px; margin-bottom: 50px;}
+
 .bg-wrap img{ height: 690px; }  
 .grass-wrap img{ height: 300px; }  
 .text2025 img{ 
@@ -145,7 +194,7 @@ scale: 0.9;
 .title img{ 
 /* scale: 0.8;   */
 }
-.info h2{  margin-top: 280px; margin-bottom: 50px;}
+
 
 .right_tree{ scale: 0.7; right: -90px; top:380px;}
 .left_tree{ scale: 0.7; left: -73px; top:380px;}
@@ -170,7 +219,7 @@ scale: 0.7;
 left: 50%;
 }
 .grasslower img{ width: 150px;}
-
+.grasslower1 img{ width: 150px;}
 
 
 }
@@ -182,7 +231,7 @@ left: 50%;
 /**************768 **************/
 
 @media (max-width: 768px) {
-/* body{ background: blue;} */
+
 .bg-wrap img{ height: 550px; } 
 .grass-wrap img{ height: 300px; } 
 .text2025{ top:120px;}  
@@ -209,6 +258,20 @@ scale: 0.5;
    margin: 0 auto;
 
 }
+
+.grasslower1{ 
+  top:290px;
+    position: relative;
+    left: auto;
+    transform: none;
+
+}
+.grasslower1 img { 
+    scale: 0.6; 
+   margin: 0 auto;
+
+}
+
 
 .left_tree{ 
 position: absolute; 
@@ -246,8 +309,9 @@ top:430px;
 scale: 0.6;
 left: 45%;
 }
-
-.info h2{  margin-top: 50px; ;}
+.login_btn1{ top: 360px;  }
+.bears_login{  top:150px;}
+.info h2{  margin-top: 350px;}
 
 .grasscenter{
  top:700px;
@@ -256,8 +320,6 @@ left: 45%;
 
 .login_btn1{
  
- 
-   
 } 
 
 .login_btn img{ width: 200px;}

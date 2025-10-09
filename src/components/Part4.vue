@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 
+
 // 三個主題（含圖片、標題、文字、祝福語）
 const treasures = [
   {
@@ -66,15 +67,7 @@ function selectTreasure(id) {
   selectedId.value = id === selectedId.value ? null : id
 }
 
-// 模擬「儲存截圖」
-function saveScreenshot() {
-  alert('📸 已儲存截圖！（可整合 html2canvas）')
-}
 
-// 模擬「分享功能」
-function shareResult() {
-  alert('📤 已分享至 FB / IG！（可整合分享 API）')
-}
 </script>
 
 <template>
@@ -165,7 +158,6 @@ function shareResult() {
           <a href="">服務據點</a>  ｜  
           <a href="">聯絡我們</a>
           </div>
-
 
       </div>
   </div>

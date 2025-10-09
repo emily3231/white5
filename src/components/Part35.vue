@@ -10,7 +10,7 @@ const treasures = [
     label: '身體健康',
     closed: treasureClosed,
     opened: treasureOpened,
-    title: '健康 Fitback！',
+    title: '健康Fitback！',
     text: '你健康不難，難的是你不動～Fit一下，回饋馬上來！',
   },
   {
@@ -47,11 +47,13 @@ const currentTreasure = computed(() =>
 
 <template>
   <div class="pt-100 part3_treasure">
-    <h2 class="mb-4 mt-5 font50 green-color ">\\解鎖 寶藏 時刻//</h2>
+    <h2 class="mb-4 mt-5 font50 green-color  c-font">\\解鎖 寶藏 時刻//</h2>
 
     <div class="p3-rec">
-      <div class="font28 mb-3">鑰匙在手，寶藏在前<br>
-開啟屬於你的 <span class="green-color">新年新願望！</span></div>
+      <!-- <div class="row"></div> -->
+       <div class="key1"><img src="@/assets/images/penguin_left.png" ></div>
+      <div class="font28 mb-3  c-font">鑰匙在手，寶藏在前<br>
+開啟屬於你的 <span class="green-color  c-font">新年新願望！</span></div>
       <div class="treasure-list">
         <div v-for="t in treasures" :key="t.id" class="treasure-item">
           <!-- 上方圖片 -->
@@ -63,26 +65,30 @@ const currentTreasure = computed(() =>
 
           <!-- 按鈕 -->
           <button
-            class="btn"
-            :class="{ active: selectedId === t.id }"
+            class="btn font26 c-font"
+            :class="{ active: selectedId === t.id } "
             @click="selectTreasure(t.id)"
           >
-            {{ selectedId === t.id ? '已打開：' + t.label : '打開 ' + t.label }}
+            {{ selectedId === t.id ? '' + t.label : '打開 ' + t.label }}
           </button>
         </div>
       </div>
   </div>
 
       <!-- 下方顯示標題與文字 -->
-      <div v-if="currentTreasure" class="text-box fade-in nfont">
-        <h2>{{ currentTreasure.title }}</h2>
-        <p>{{ currentTreasure.text }}</p>
+      <div v-if="currentTreasure" class="text-box fade-in health mt-5">
+        <h2 class="green-font font96" >{{ currentTreasure.title }}</h2>
+        <p class="font24 nfont ">{{ currentTreasure.text }}</p>
       </div>
 
-      <div class="mt-5 three"> <img src="@/assets/images/health.png" ></div>
-        <p class="mt-5 mb-5 font24 nfont"> 恭喜你完成冒險！<br> 在這段旅程裡，你也為自己找到新的方向與療癒的補給。</p>
-    </div>
 
+   
+       
+        <div class="mt-5 three"> <img src="@/assets/images/health.png" ></div>
+        <p class="mt-3 mb-5 font24 nfont">  恭喜你完成冒險！<br> 在這段旅程裡，你也為自己找到新的方向與療癒的補給。</p>
+  
+    </div>
+     
 </template>
 
 <style scoped>

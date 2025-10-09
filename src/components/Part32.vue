@@ -128,8 +128,10 @@ onBeforeUnmount(() => clearTimer())
 
 <template>
   <div class=" part3-q">
-    <h2 class="mb-4 green-color font50 pt-100">＼問問題挑戰／</h2>
-    <p class="font24">嘿！想要寶物嗎？先答我一題！</p>
+    <h2 class="mb-4 green-color font50 pt-100 c-font">＼問問題挑戰／</h2>
+    <p class="font24 black-color  c-font">嘿！想要寶物嗎？先答我一題！</p>
+    <div class="bear3-3"><img src="@/assets/images/bear3-3.png" ></div>
+
     <div class="penguin3"><img src="@/assets/images/penguin3.gif" /></div>
     <div class="point_right"><img src="@/assets/images/point.png" /></div>
      
@@ -138,16 +140,16 @@ onBeforeUnmount(() => clearTimer())
       <!-- 開場 -->
       <section v-if="phase === 'intro'">
         <p class="text" @click="skipTypewriter">{{ displayText }}</p>
-        <button class="green_btn" @click="toQuestion" :disabled="isTyping">開始作答</button>
+        <button class="green_btn  c-font" @click="toQuestion" :disabled="isTyping">開始作答</button>
       </section>
 
       <!-- 題目 -->
       <section v-else-if="phase === 'question'">
         <h3>{{ currentQuestion.title }}</h3>
-        <p class="text" @click="skipTypewriter">{{ displayText }}</p>
-        <div class="buttons">
-          <button class="green_btn" @click="answer" :disabled="isTyping">Yes</button>
-          <button class="green_btn" @click="answer" :disabled="isTyping">No</button>
+        <p class="text c-font" @click="skipTypewriter">{{ displayText }}</p>
+        <div class="buttons ">
+          <button class="green_btn c-font" @click="answer" :disabled="isTyping">Yes</button>
+          <button class="green_btn c-font" @click="answer" :disabled="isTyping">No</button>
         </div>
       </section>
 
@@ -158,29 +160,31 @@ onBeforeUnmount(() => clearTimer())
 
       <!-- 結束送東西 -->
       <section v-else-if="phase === 'reward'" class="reward">
-        <h2> 恭喜你！</h2>
-        <p>你獲得了「1 點小樹點數」！</p>
-        <img src="@/assets/images/treasure_open.png" class="reward-img" />
+        <h2 class=" c-font"> 恭喜你！</h2>
+        <p class=" c-font">你獲得了「1 點小樹點數」！</p>
+        <img src="@/assets/images/point.png" class="reward-img" />
         <button class="green_btn" @click="restart">再玩一次</button>
       </section>
     </div>
     </div>
-            <div class="penguin3-1 ">
+         <div class="penguin">
+            <div class="penguin3-1">
                 <div class="point_left">
                   <img src="@/assets/images/point.png" >
                 </div> 
                 <div class="penguin3-1">
                  <img src="@/assets/images/penguin3-1.png" >
                 </div>
-                </div>
+              </div>
 
               <div class="center">
               <div class="key"><img src="@/assets/images/penguin_left.png" ></div>
               <div class="point">
                 <!-- <div class=" font24 nfont">\ 恭喜獲得 1點小樹點 /</div> -->
                 <img src="@/assets/images/penguin_right.png" ></div>
-              <p class="font24 nfont">答得漂亮，補給到手，繼續走！</p>
+              <p class="font24 c-font black-color">答得漂亮，補給到手，繼續走！</p>
           </div>
+        </div>
   </div>
 
 </template>

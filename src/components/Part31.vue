@@ -34,12 +34,12 @@ function toggleOptions() {
 </script>
 
 <template>
-  <div class="bg_green_lower"><img src="@/assets/images/bg_green_lower.png"></div>
+  
 
 
   <div class="part3-ckeck">
   <div class="part3-1 container ">
-     <h2 class="mb-4 green-color font50">\探險裝備檢查/</h2>
+     <h2 class="mb-4 green-color font50  c-font">\探險裝備檢查/</h2>
     <div class="bear3-1" ><img src="@/assets/images/bear3-1.gif" alt="熊裝備"></div>
   </div>
 
@@ -62,7 +62,7 @@ function toggleOptions() {
         <template v-else>
           <p class="text" v-html="introText"></p>
 
-          <div class="button-group">
+          <div class="button-group  c-font">
             <button class="green_btn" @click="toggleOptions">你擅長的</button>
             <button class="green_btn" @click="toggleOptions">需補強的</button>
           </div>
@@ -108,7 +108,7 @@ function toggleOptions() {
                 <div class="ice_text">癌症</div>
             </div>    
 
-        <p class="font-1">有顧到重點，還可以更全面！</p>
+        <p class="font-1 black">有顧到重點，還可以更全面！</p>
         <div class="hat_container">    
             <div class="hat"><img src="@/assets/images/bear3-2_hat.png" ></div>
             <div class="bear3-2"><img src="@/assets/images/bear3-2.png" ></div>

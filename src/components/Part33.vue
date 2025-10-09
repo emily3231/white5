@@ -23,13 +23,13 @@ showRandomAchievement()
 <template>
 
   <div class="mt-100 part3_step">
-<h2 class="mb-4 mt-5 green-color font50">\步數回顧/</h2>
-<p class="font24">你的雙腳，今年踏遍了多少風景？</p>
+<h2 class="mb-4 mt-5 green-color font50 c-font">\步數回顧/</h2>
+<p class="font24 black-color c-font">你的雙腳，今年踏遍了多少風景？</p>
 <div class="step_img"><img src="@/assets/images/step.png" ></div>
 
 <div class="step_warp">
 <div class="step center mx-auto ">
-        <span class="font-3 font96" >426萬</span>
+        <span class="font-3 font96 " >426萬</span>
         <span class="font-2 mt-5 font48">步</span>
     </div>
     <div class="font12 black mt-3">數據來源：統計至 2025/12/31 前</div>
@@ -39,14 +39,14 @@ showRandomAchievement()
   <div class="row center">
   <div class="col-md-4  bear-left"> <img src="@/assets/images/bear_step.gif" ></div>
   <div class=" col-md-8 achievement">
-    <div color="font28">{{ message }}</div >
+    <div color="font28 c-font">{{ message }}</div >
   </div>
   <div class="tru"><img src="@/assets/images/tru.png" ></div>
   
   </div>
  </div>
 
- <p class="font24">你知道嗎？ <br>踏出越多步，FitBack App 就能為冒險儲備更多小樹點唷！</p>
+ <p class="font24 black  c-font">你知道嗎？ <br>踏出越多步，FitBack App 就能為冒險儲備更多小樹點唷！</p>
 
   </div>
 </template>

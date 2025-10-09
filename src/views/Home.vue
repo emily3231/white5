@@ -25,7 +25,7 @@ function preventKeyScroll(e) {
   if (keys.includes(e.key)) e.preventDefault()
 }
 
-// 平滑滾動到指定區塊
+// 平滑滾動
 function scrollToSection(index) {
   const target = sections.value[index]
   if (target) target.scrollIntoView({ behavior: 'smooth' })
@@ -77,7 +77,6 @@ function nextSection() {
 // 掛載 / 卸載
 onMounted(() => {
   sections.value = Array.from(document.querySelectorAll('.section'))
-  // 初始鎖住滾動
   window.addEventListener('wheel', preventDefault, { passive: false })
   window.addEventListener('touchmove', preventDefault, { passive: false })
   window.addEventListener('keydown', preventKeyScroll, { passive: false })
@@ -95,18 +94,14 @@ const images = [
   new URL('../assets/images/alert.png', import.meta.url).href
 ]
 
-// 預設顯示第一張
 const currentImage = ref(images[0])
 const isChanged = ref(false)
 
 // 點圖片 → 換圖一次 + 滾動到第三區
 function changeImageAndScroll() {
   if (!isChanged.value) {
-    // 1️⃣ 換圖片
     currentImage.value = images[1]
     isChanged.value = true
-
-    // 2️⃣ 延遲 0.5 秒後滾動（讓換圖動畫先顯示）
     setTimeout(() => {
       const section = document.getElementById('section3')
       if (section) {
@@ -119,106 +114,90 @@ function changeImageAndScroll() {
 
 <template>
   <main>
+
+   
+    <div class="all all_warp"> <!--  背景中線：固定於畫面最底層 -->
+
+    <div class="container overhide">
+      <div class="center_line clild_center cell_hide">
+        <img src="@/assets/images/center_line.png" alt="center line" />
+      </div>
+      <div class="center_line clild_center computer_hide">
+        <img src="@/assets/images/center_line_cell.png" alt="center line cell" />
+      </div>
+    </div>
+
     <!-- 第1區 -->
-    <section class="section all_warp " :style="{ background: colors[0] }">
+    <section class="section all_warp" :style="{ background: colors[0] }">
       <div class="content">
-
-        <KV />
-        <div class="grasscenter ">
-        <button class="login_btn center" @click="unlockScroll" :disabled="unlocked">
-          <img src="../assets/images/login_btn.png"> 
-        </button>
-                  {{ unlocked ? '已啟動' : '往下探索' }}
+        <div class="import"><KV /></div>
+        <div class="grasscenter">
+          <div class="center">
+            <div class="btn_y_wrap">
+              <button class="btn_y font44 c-font" @click="unlockScroll" :disabled="unlocked">
+                {{ unlocked ? '已啟動' : 'START 開始' }}
+              </button>
+            </div>
+          </div>
         </div>
-
-      <!-- <div class="grasscenter ">
-        <div class="login_btn center" > <img src="../assets/images/login_btn.png"></div>
-      <p class="mt-3 black">此為保戶頁</p>
-      </div> -->
-
       </div>
     </section>
 
     <!-- 第2區 -->
-
-    <section class="section all_warp " :style="{ background: colors[0] }">
+    <section  class="section all_warp section2" :style="{ background: colors[0] }"> 
       <div class="content">
-        <Part2 />
-        
-      <div class="alarm"  >
-     <transition name="fade" mode="out-in" >
-      <img
-        :key="currentImage"
-        :src="currentImage"
-        alt="白白"
-        class="img"
-        @click=" changeImageAndScroll"
-      />
-     </transition>
-     </div>
-        <!-- <button class="next-btn" @click="nextSection">下一步 ➜ 第三區</button> -->
+        <div class="import" style="height: 818px"><Part2 />
+         
+        </div>
+        <div class="alarm">
+          <transition name="fade" mode="out-in">
+            <img
+              :key="currentImage"
+              :src="currentImage"
+              alt="白白"
+              class="img"
+              @click="changeImageAndScroll"
+            />
+          </transition>
+        </div>
       </div>
+         <div class="bg_green_top"><img src="@/assets/images/bg_green_top.png"></div>
     </section>
-
-     
 
     <!-- 第2-2區 -->
-    <section  id="section3"    class="section all_warp" :style="{ background: colors[1] }">
+    <section  id="section3" class="section all_warp" :style="{ background: colors[1] }">
       <div class="content">
-        <Part22 />
-        
-   <transition name="fade" mode="out-in">
-    
-    </transition>
-         <!-- <button class="next-btn" @click="changeImageAndScroll">下一步 ➜</button>  -->
+        <div class="import"><Part22 /></div>
       </div>
     </section>
 
- <div class="container overhide" >
-        <div class="center_line clild_center cell_hide"><img src="@/assets/images/center_line.png"></div>
-        <div class="center_line clild_center computer_hide"><img src="@/assets/images/center_line_cell.png"></div>
-  </div> 
+    <!-- 第3～6區 -->
+    <div  class="">
+      <section class="section all_warp" :style="{ background: colors[2] }">
+        <div class="bg_green_lower"><img src="@/assets/images/bg_green_lower.png"></div>
+        <div class="content"><div class="import"><Part31 /></div></div>
+      </section>
 
-  <div class="part3 text-center ">
-    <!-- 第3區 -->
-    <section class="section all_warp " :style="{ background: colors[2] }">
-      <div class="content">
-         <h1><Part31 /></h1>
-        <!-- <button class="next-btn" @click="nextSection">下一步 ➜ </button> -->
-      </div>
-    </section>
+      <section class="section all_warp" :style="{ background: colors[2] }">
+        <div class="content"><div class="import"><Part32 /></div></div>
+      </section>
 
-    <!-- 第4區 -->
-    <section class="section all_warp " :style="{ background: colors[2] }">
-      <div class="content">
-        <h1><Part32 /></h1>
-        <!-- <button class="next-btn" @click="nextSection">下一步 ➜ </button> -->
-      </div>
-    </section>
+      <section class="section all_warp" :style="{ background: colors[2] }">
+        <div class="content"><div class="import"><Part33 /></div></div>
+      </section>
 
-    <!-- 第5區 -->
-    <section class="section all_warp " :style="{ background: colors[2] }">
-      <div class="content">
-          <h1><Part33 /></h1> 
-        <!-- <button class="next-btn" @click="nextSection">下一步 ➜ </button> -->
-      </div>
-    </section>
+      <section class="section all_warp" :style="{ background: colors[2] }">
+        <div class="content"><div class="import"><Part35 /></div></div>
+      </section>
+    </div>
 
-    <!-- 第6區 -->
-    <section class="section all_warp " :style="{ background: colors[2] }">
-      <div class="content">
-        <h1><Part35 /></h1> 
-        <!-- <button class="next-btn" @click="nextSection">下一步 ➜</button> -->
-      </div>
-    </section>
-</div>
     <!-- 第7區 -->
-    <section class="section all_warp " :style="{ background: colors[2] }">
+    <section class="section all_warp" :style="{ background: colors[2] }">
       <div class="content">
-        <h1><Part4 /></h1>
-        <p>🎉 恭喜你滑完所有區塊！</p>
+        <div class="import"><Part4 /></div>
       </div>
     </section>
+    </div>
   </main>
 </template>
 
@@ -226,70 +205,77 @@ function changeImageAndScroll() {
 const colors = [
   'linear-gradient(135deg, #75C483, #75C483)',
   'linear-gradient(135deg, #ECFF9E, #ECFF9E)',
-  'linear-gradient(135deg, #f5f5f5, #f5f5f5)',
-  
+  'linear-gradient(135deg, #f5f5f5, #f5f5f5)'
 ]
 </script>
 
 <style scoped>
-
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
-html, body {
+html,
+body {
   height: 100%;
   overflow: hidden;
 }
-.alarm{
-    margin-top: -30px;   z-index: 5;}
-.alarm img{
-   margin-top: -250px !important;
-   z-index: 5;
+
+
+
+/* 手機切換用 */
+.cell_hide {
+  display: block;
+}
+.computer_hide {
+  display: none;
 }
 
-.content{ width: 100%;}
-
-.center_line {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1; /* 線比背景高，但比主圖片低 */
-  display: flex;
-  justify-content: center;
+@media (max-width: 768px) {
+  .cell_hide {
+    display: none;
+  }
+  .computer_hide {
+    display: block;
+  }
 }
+
+
+
+
+/* 主要區塊 */
 
 .section {
-  /* height: 100vh; */
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   color: #fff;
   text-align: center;
-   z-index: 5;
- 
-
 }
-button{ border: 0px;
-    background: none;
-    
-    
+
+.content {
+  width: 100%;
+}
+.bg_green_top{   
+   position: absolute;
+   bottom: 0px;
+  
   }
-/* .cta, .next-btn {
-  margin-top: 24px;
-  padding: 14px 28px;
-  font-size: 18px;
-  border: none;
-  border-radius: 12px;
-  background: #111;
-  color: #fff;
+   /* .bg_green_top img{ height: 700px;}     */
+
+.alarm {
+  margin-top: -200px;
+  z-index: 5;
   cursor: pointer;
-  transition: 0.3s ease;
-} */
-.cta:hover:enabled, .next-btn:hover {
+}
+.alarm img {
+  margin-top: -250px !important;
+  z-index: 5;
+}
+
+.cta:hover:enabled,
+.next-btn:hover {
   background: #333;
   transform: scale(1.05);
 }

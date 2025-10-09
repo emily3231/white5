@@ -43,7 +43,7 @@ function nextText() {
            </div>
         </div>
 
-        <div class="bg_green_top"><img src="@/assets/images/bg_green_top.png"></div>
+      
 
   
 </template>
