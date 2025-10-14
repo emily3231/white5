@@ -44,9 +44,9 @@ margin: auto; /* 自動分配空間 */
     width: 100%;
     
 } 
-.sky_wrap img{ width: 100%;}
+.sky_wrap img{ width: 100%; }
 
-.bg-wrap img{ height: 900px;width: 100% } 
+.bg-wrap img{ height: 660px; width: 100% } 
 
 .grass-wrap img{ height: 400px;  width: 100%;} 
 .logo{ 
@@ -65,65 +65,286 @@ transform: translate(-50%, -50%);
 }
 
 .title{ 
+  z-index: 30;
 position: absolute; 
-top:300px;
+top:200px;
 left: 50%;
 transform: translate(-50%, -50%);
-    
+  animation:
+    floatUpDown 3s ease-in-out infinite;
+}
+@keyframes floatUpDown {
+  0%, 100% {
+    transform: translate(-50%, 0);
+  }
+  50% {
+    transform: translate(-50%, -50px);
+  }
 }
 
-.ice{ 
-position: absolute; 
-top:700px;
-left: 50%;
-transform: translate(-50%, -50%);
+.btn_y_wrap{ 
+  min-width: 440px;
+  position: absolute;
+  top: -300px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: btnFadeIn 1s ease-out forwards;
+  animation-delay: 4.5s; /* 白白動畫結束後出現 */
+  opacity: 0;
+  font-size: 44px;
+}
+
+.btn_y{
+border-radius: 100px;
+border: 4px solid #FFF;
+background: #E9C461;
+color:white;
+width: 90%;
+margin:0px 30px;
+padding: 10px;
+cursor: pointer;
+  animation: breath 2.4s ease-in-out infinite;
+  font: 44px;
+}
+
+@keyframes btnFadeIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 10px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+@keyframes breath {
+  0%, 100% {
+    transform: scale(1);
     
+
+  }
+  50% {
+    transform: scale(1.08);
+
+  }
+}
+
+.btn_y:hover:enabled {
+  opacity: 1;
+  transform: scale(1.05);
+}
+.btn_y:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+  filter: brightness(0.9);
+}
+/* ==========================================================
+ 🌟 冰塊 → 白白 → 左右樹 → 企鵝 → 擁抱 登場動畫
+ ========================================================== */
+
+/* 1️⃣ 冰塊：右滑入 → 放大 */
+.ice {
+  position: absolute;
+  top: 500px;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.1);
+  animation: iceIn 2s ease-out forwards;
+  animation-delay: 0s;
+  z-index: 0;
+  opacity: 0;
+}
+
+@keyframes iceIn {
+  0% {
+    transform: translate(-200%, -50%) scale(0.1);
+    opacity: 0;
+  }
+  60% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* 2️⃣ 白白：右滑入 → 停頓 → 上升50px → 下落50px */
+.bacbac {
+  position: absolute;
+  top: 540px;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.1);
+  animation: bacbacMove 4.2s ease-out forwards;
+  animation-delay:1s;
+  z-index: 50;
+  opacity: 0;
+}
+
+@keyframes bacbacMove {
+ 0% {
+    transform: translate(-50%, -50%) scale(0.1);
+    opacity: 0;
+  }
+  20% {
+   transform: translate(-50%, -50%) scale(0.1);
+    opacity: 1;
+  }
+
+   30% {
+    transform: translate(-50%, -50%) scale(1.05, 0.95) translateY(0); /* 蹲下預備 */
+  }
+  40% {
+    transform: translate(-50%, -70%) scale(0.95, 1.05); /* 跳起來 */
+  }
+  60% {
+    transform: translate(-50%, -60%) scale(1.02, 0.98); /* 空中 */
+  }
+  80% {
+    transform: translate(-50%, -50%) scale(1.05, 0.95) translateY(0); /* 著地 */
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.2); /* 穩定在原位 */
+    opacity: 1;
+  }
+}
+
+
+
+/* 3️⃣ 左右樹：同時滑入（在白白後、企鵝前） */
+.left_tree {
+  position: absolute;
+  left: -200px; /* 從畫面外左側開始 */
+  top: 300px;
+  animation: leftTreeMove 2.2s ease-out forwards;
+  animation-delay: 2.0s;
+  z-index: ;
+  opacity: 0;
+}
+
+@keyframes leftTreeMove {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.right_tree {
+  position: absolute;
+  right: -200px; /* 從畫面外右側開始 */
+  top: 300px;
+  animation: rightTreeMove 2.2s ease-out forwards;
+  animation-delay: 2.0s; /* 同步與左樹 */
+  z-index: 10;
+  opacity: 0;
+}
+
+@keyframes rightTreeMove {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* 4️⃣ 企鵝：左滑入定位 */
+.penguin {
+  position: absolute;
+  top: 600px;
+  left: 26%;
+  animation: penguinMove 2s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+  animation-delay: 3s;
+  z-index: 10;
+  opacity: 0;
+}
+
+@keyframes penguinMove {
+  0% {
+    transform: translate(-250%, -50%);
+    opacity: 0;
+  }
+  60% {
+    transform: translate(-10%, -50%); /* 快速接近終點 */
+    opacity: 1;
+  }
+  80% {
+    transform: translate(3%, -50%); /* 稍微反彈 */
+  }
+  100% {
+    transform: translate(0, -50%); /* 停下 */
+    opacity: 1;
+  }
+}
+/* 5️⃣ 擁抱：左滑入（最後登場） */
+.hug {
+  position: absolute;
+  top: 600px;
+  left: 58%;
+  animation: hugMove 2s ease-out forwards;
+  animation-delay: 3s;
+  z-index: 10;
+  opacity: 0;
+}
+
+@keyframes hugMove {
+  0% {
+    transform: translate(250%, -50%);
+    opacity: 0;
+  }
+  60% {
+    transform: translate(10%, -50%); /* 快速滑進 */
+    opacity: 1;
+  }
+  80% {
+    transform: translate(-3%, -50%); /* 反彈 */
+  }
+  100% {
+    transform: translate(0, -50%); /* 煞停定位 */
+    opacity: 1;
+  }
+}
+
+
+
+ .star {
+  position: absolute;
+  animation: starTwinkle 2s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+
+/* 🌟 閃爍 + 放大縮小 */
+@keyframes starTwinkle {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+    filter: brightness(1.5);
+  }
 }
 
 .grasstop{ top: 20%}
-.left_tree{ 
-position: absolute; 
-left: -20px;
-top:550px;
-}
-
-.right_tree{ 
-position: absolute; 
-
-right: 10px;
- top:550px;
-}
-
-.penguin{ position: absolute; 
-right: 40px;
-}
-
-.penguin{ position: absolute; 
-top:800px;
-left: -500px;
-z-index: 10;
-}
-
-.hug{ position: absolute; 
-     top:700px;
-right: 200px;
-z-index: 10;
-}
-
-.bacbac{ 
-top:800px;
-position: absolute; 
-left: 50%;
-transform: translate(-50%, -50%);
-z-index: 10;
-}
-
 .grasscenter{
     top:1080px;
     position: absolute;
 left: 50%;
 transform: translate(-50%, -50%);
 } 
+
 
 
 .login_btn{
@@ -160,7 +381,7 @@ transform: translate(-50%, -50%);
 
 .grasslower1{
 position: absolute;
-top:450px;
+top:480px;
 left: 50%;
 transform: translate(-50%, -50%);
 
@@ -177,12 +398,13 @@ transform: translate(-50%, -50%);
 
 /**************1200**************/
 @media (max-width: 1200px) {
-.login_btn1{ top: 320px;  }
+.login_wrap{   margin-top: -200px;}
+.login_btn1{  }
 .bears_login{  top:30px;}
 .info h2{  margin-top: 480px; margin-bottom: 50px;}
 
-.bg-wrap img{ height: 690px; }  
-.grass-wrap img{ height: 300px; }  
+.bg-wrap img{ height: 550px; }  
+.grass-wrap img{ height: 200px; }  
 .text2025 img{ 
 scale: 0.9;  
 }
@@ -190,34 +412,33 @@ scale: 0.9;
     top: 900px;
    
 }
-.login_btn img{ width: 300px;}
+
+
 .title img{ 
 /* scale: 0.8;   */
 }
-
-
-.right_tree{ scale: 0.7; right: -90px; top:380px;}
-.left_tree{ scale: 0.7; left: -73px; top:380px;}
-
-.ice{ top:500px;}
+.btn_y_wrap{ top:-280px;  width: 300px;}
+.right_tree{ scale: 0.7; right: -90px; top:200px;}
+.left_tree{ scale: 0.7; left: -73px; top:200px;}
+.ice{ top:350px;}
 .penguin{
-    top:580px;
-left: -400px;
+    top:500px;
 scale: 0.7;
 }
-.login_btn{}
 .hug{ 
- top:500px;
- right: 5%;
+ top:450px;
 scale: 0.7;
-
 }
-
 .bacbac{ 
- top:600px;
+ top:400px;
 scale: 0.7;
 left: 50%;
 }
+
+
+
+.login_btn{}
+
 .grasslower img{ width: 150px;}
 .grasslower1 img{ width: 150px;}
 
@@ -232,22 +453,22 @@ left: 50%;
 
 @media (max-width: 768px) {
 
-.bg-wrap img{ height: 550px; } 
+.bg-wrap img{ height: 350px; } 
 .grass-wrap img{ height: 300px; } 
 .text2025{ top:120px;}  
 .text2025 img{ 
 scale: 0.5;  
 }
-.title{ top:200px;}
+.title{ top:170px;}
 .title img{ 
 /* scale: 0.5;   */
 }
 
 .ice{
-    top:320px;
+    top:210px;
+  
 }
 .grasslower{ 
-  
     position: relative;
     left: auto;
     transform: none;
@@ -272,13 +493,14 @@ scale: 0.5;
 
 }
 
-
+.btn_y_wrap{ top:-280px; }
+.btn_y{font-size: 24px;}
 .left_tree{ 
 position: absolute; 
 /* left: 12px; */
-top:290px;
+top:20px;
 scale: 0.5;
-left: -110px;
+left: -210px;
 vertical-align: left; /* 垂直置中 */
 }
 
@@ -286,26 +508,27 @@ vertical-align: left; /* 垂直置中 */
 position: absolute; 
 
 /* right: 10%; */
-top:290px;
+top:0px;
 scale: 0.5;
-right: -90px;
+right: -230px;
+z-index: 10;
 }
 
 .penguin{
-    top:460px;
- left: -200px;
+    top:300px;
+ left: 12%;
 scale: 0.6;
 }
 
 .hug{ 
- top:400px;
- left: 50%;
-scale: 0.6;
+ top:270px;
+ left: 58%;
+scale: 0.5;
 
 }
-
+.btn_y_wrap{ top:-180px; }
 .bacbac{ 
-top:430px;
+top:200px;
 scale: 0.6;
 left: 45%;
 }
@@ -326,34 +549,29 @@ left: 45%;
 
 }
 
-/**************768 **************/
-
-@media (max-width: 480px) {
 
 
-.right_tree{ 
-position: absolute; 
 
-right: -200px;
+/**************480**************/
 
-}
-
+@media (max-width: 768px) {
 .penguin{
- top:460px;
- left: -100px;
-scale: 0.4;
+    top:300px;
+ left: 0px;
+scale: 0.6;
 }
 
 .hug{ 
- top:400px;
- left: 40%;
-scale: 0.4;
+ top:270px;
+ left: 55%;
+scale: 0.5;
 
 }
-
+.btn_y_wrap{ top:-180px; }
 .bacbac{ 
-top:430px;
-scale: 0.4;
-left: 25%;
+top:300px;
+scale: 0.6;
+left: 35%;
 }
+
 }

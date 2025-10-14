@@ -1,179 +1,181 @@
 <script setup>
 import { ref, computed } from 'vue'
-import treasureClosed from '@/assets/images/treasure.png'
-import treasureOpened from '@/assets/images/treasure_open.png'
+import { useRouter } from 'vue-router' // ✅ 補上這行
+import { useTreasures } from '@/composables/useTreasures'
+import { useDefenseMessage } from '@/composables/useDefenseMessage'
 
-// 三個選項（每個都有圖、標題、文字）
-const treasures = [
-  {
-    id: 1,
-    label: '身體健康',
-    closed: treasureClosed,
-    opened: treasureOpened,
-    title: '健康Fitback！',
-    text: '你健康不難，難的是你不動～Fit一下，回饋馬上來！',
-  },
-  {
-    id: 2,
-    label: '環遊世界',
-    closed: treasureClosed,
-    opened: treasureOpened,
-    title: '網路投保！',
-    text: '旅程精彩，計畫周全更安心～衝景點的同時，也記得幫自己多一層準備！',
-  },
-  {
-    id: 3,
-    label: '安心守護',
-    closed: treasureClosed,
-    opened: treasureOpened,
-    title: '保險視圖',
-    text: '多一點準備，就能多一點安心，讓每一步都走得更穩。',
-  },
-]
 
-// 紀錄目前選擇的 id（一次只能選一個）
-const selectedId = ref(null)
 
-// 點擊切換
-function selectTreasure(id) {
-  selectedId.value = id === selectedId.value ? null : id
+// ✅ 共用寶箱狀態（與 Part35 同步）
+const { currentTreasure, selectedBlessing } = useTreasures()
+
+// blessings 列表
+const blessings = computed(() => currentTreasure.value?.blessings || [])
+
+// 選擇祝福語
+const handleSelect = (e) => {
+  selectedBlessing.value = e.target.value
 }
 
-// 取得目前選中的選項
-const currentTreasure = computed(() =>
-  treasures.find(t => t.id === selectedId.value)
-)
+// 跳轉到 Share.vue
+const router = useRouter()
+const goToShare = () => {
+  if (selectedBlessing.value) router.push('/send')
+}
+
+// ✅ 共用防護狀態（與 Part31 同步）
+const { message, defenseValue } = useDefenseMessage()
+
+
+const emit = defineEmits(['nextText', 'goNextSection'])
+function goNext() {
+  emit('goNextSection') // 讓父元件（Home.vue）知道「要滾動下一區」
+}
+
 </script>
 
-<template>
-  <div class="pt-100 part3_treasure">
-    <h2 class="mb-4 mt-5 font50 green-color  c-font">\\解鎖 寶藏 時刻//</h2>
-
-    <div class="p3-rec">
-      <!-- <div class="row"></div> -->
-       <div class="key1"><img src="@/assets/images/penguin_left.png" ></div>
-      <div class="font28 mb-3  c-font">鑰匙在手，寶藏在前<br>
-開啟屬於你的 <span class="green-color  c-font">新年新願望！</span></div>
-      <div class="treasure-list">
-        <div v-for="t in treasures" :key="t.id" class="treasure-item">
-          <!-- 上方圖片 -->
-          <img
-            :src="selectedId === t.id ? t.opened : t.closed"
-            :alt="t.label"
-            class="treasure-img"
-          />
-
-          <!-- 按鈕 -->
-          <button
-            class="btn font26 c-font"
-            :class="{ active: selectedId === t.id } "
-            @click="selectTreasure(t.id)"
-          >
-            {{ selectedId === t.id ? '' + t.label : '打開 ' + t.label }}
-          </button>
-        </div>
-      </div>
-  </div>
-
-      <!-- 下方顯示標題與文字 -->
-      <div v-if="currentTreasure" class="text-box fade-in health mt-5">
-        <h2 class="green-font font96" >{{ currentTreasure.title }}</h2>
-        <p class="font24 nfont ">{{ currentTreasure.text }}</p>
-      </div>
-
-
-   
-       
-        <div class="mt-5 three"> <img src="@/assets/images/health.png" ></div>
-        <p class="mt-3 mb-5 font24 nfont">  恭喜你完成冒險！<br> 在這段旅程裡，你也為自己找到新的方向與療癒的補給。</p>
-  
-    </div>
-     
-</template>
 
 <style scoped>
 
-
-.treasure-list {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  flex-wrap: wrap;
-  margin-bottom: 30px;
+:root {
+  --tree-w: clamp(180px, 26vw, 340px);
+  --bear-w: clamp(90px, 13vw, 170px);
+  --subtree-w: clamp(110px, 15vw, 200px);
+  --ground-w: 100%;
 }
 
-.treasure-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
 
-.treasure-img {
-  width: 33.333;
-  height: 150px;
-  border-radius: 10px;
-  object-fit: cover;
-}
-
-.treasure-img:hover {
-  transform: scale(1.05);
-  border-color: #2BDF21;
-}
-
-.btn {
-  width: 200px;
-    height: 60px;
-    background: #fff;
-    border: #2BDF21 2px solid;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.btn:hover {
-  background: #f3f4f6;
-}
-
-.btn.active {
-  background: #2BDF21;
-  color: white;
-  border-color: #2BDF21;
-}
-
-.text-box {
-
+.main{ padding-bottom: 200px;}
+/* 場景容器 */
+.scene1 {
+  position: relative;
+  width: min(92vw, 1100px);
+  aspect-ratio: 16 / 9;
   margin: 0 auto;
-}
-
-.text-box h2 {
-  margin: 0 0 10px;
-  color: #2BDF21;
- font-size: 96px;
+  /* overflow: hidden; */
+  background: transparent;
 
 }
 
-.text-box p {
-  margin: 0;
-  color: #000;
-  font-size: 24px;
+/* ✅ health 圖放大動畫 */
+.three img {
+  /* width: 200px; */
+  transform: scale(0.5);
+  opacity: 0.5;
+  transition: transform 0.8s ease, opacity 0.8s ease;
+   position: absolute;
+   left: 35%; 
+  bottom: 9%; 
+  width: var(--tree-w);
+  transform-origin: bottom center;
+  z-index: 3;
+
+
 }
 
-.fade-in {
-  animation: fadeIn 0.4s ease-in-out;
+.three img.visible {
+  transform: scale(1.5);
+  opacity: 1;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
+
+
+/* 地板 */
+.ground {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: var(--ground-w);
+  z-index: 2;
+}
+
+
+/* 小樹背景層 */
+.subtree {
+  position: absolute;
+  width: var(--subtree-w);
+  z-index: 1;
+  pointer-events: none;
+   animation: float_right 3.5s ease-in-out infinite;
+}
+
+/* ✅ 右邊 */
+.three-left {
+  top: 60%;
+  right: 20%;
+  transform: translateY(0);
+   z-index: 5;
+   animation: float_left 3.5s ease-in-out infinite;
+}
+
+/* ✅ 左邊*/
+.three-right {
+  top:60%;
+  left: 25%;
+  transform: translateY(0);
+  z-index: 5;
+}
+/* 小樹浮動動畫 */
+/* .float {
+  animation: float 3.5s ease-in-out infinite;
+} */
+@keyframes float_left {
+  0% {
+    transform: translateY(0) translateX(var(--shift, 0));
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  50% {
+    transform: translateY(-100px) translateX(var(--shift, 0));
+  }
+  100% {
+    transform: translateY(0) translateX(var(--shift, 0));
+  }
+}
+@keyframes float_right {
+  0% {
+    transform: translateY(0) translateX(var(--shift, 0));
+  }
+  50% {
+    transform: translateY(-10px) translateX(var(--shift, 0));
+  }
+  100% {
+    transform: translateY(0) translateX(var(--shift, 0));
   }
 }
 
+/* 熊（前景） */
+.bear {
+  position: absolute;
+  left: 50%;
+  width: var(--bear-w);
+  z-index: 4;
+  pointer-events: none;
+}
 
+.bear-right {
+  bottom: 13%;
+  transform: translate(110%, 0%);
+}
+.bear-left {
+  bottom: 7%;
+  transform: translate(-220%, 0%);
+}
 
+/* 手機微調 */
+@media (max-width: 640px) {
+  .bear-right {
+    bottom: 10%;
+    transform: translate(90%, 5%);
+  }
+  .bear-left {
+    bottom: 6%;
+    transform: translate(-180%, 5%);
+  }
+  .three-left {
+    transform: translate(120%, -10%);
+  }
+  .three-right {
+    transform: translate(-180%, -5%);
+  }
+}
 </style>

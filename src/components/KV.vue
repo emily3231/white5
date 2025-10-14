@@ -20,11 +20,23 @@
     <div class="grass-wrap"><img src="../assets/images/bg2.png"></div> 
 
     <div class="grasstop ">
-    <div class="left_tree"><img src="../assets/images/tree_left.png"></div>
-    <div class="right_tree"><img src="../assets/images/tree_right.png"></div>
-    <div class="penguin"><img src="../assets/images/penguin.png"></div>
-    <div class="hug"><img src="../assets/images/hug.png"></div>
-    <div class="bacbac"><img src="../assets/images/bacbac.png"></div>
+    <div class="left_tree"> 
+      
+    <img src="../assets/images/tree_left.png">
+    <span class="star"><img src="../assets/images/star.png"></span>
+    </div>
+    <div class="right_tree">
+      <span class="star"><img src="../assets/images/star.png"></span>
+     <img src="../assets/images/tree_right.png">
+    
+    </div>
+
+    <div class="container">
+      <div class="penguin"><img src="../assets/images/penguin.png"></div>
+      <div class="hug"><img src="../assets/images/hug.png"></div>
+      <div class="bacbac"><img src="../assets/images/bacbac.png"></div>
+    </div>
+
     </div> 
 
 

@@ -1,6 +1,6 @@
 <script setup>
 import html2canvas from 'html2canvas'
-import KV from '../components/KV.vue'
+import Share from '@/views/Share.vue'
 
 // 1️⃣ 儲存截圖
 const saveScreenshot = async () => {
@@ -72,9 +72,9 @@ const shareScreenshot = async () => {
 
 // 3️⃣ 分享網址
 const shareLink = async () => {
-  const shareUrl = 'https://emily3231.github.io/white4/home'
-  const shareTitle = '我的成果頁'
-  const shareText = '快來看看我的成果吧～'
+  const shareUrl = 'https://emily3231.github.io/white4/'
+  const shareTitle = '白白大冒險'
+  const shareText = '年度回饋活動，走路健康又能賺小樹點！'
 
   if (navigator.share) {
     try {
@@ -97,15 +97,14 @@ const shareLink = async () => {
 <template>
   <div class="container">
     <div class="btn-group">
-      <button @click="saveScreenshot">📸 儲存截圖</button>
-      <button @click="shareScreenshot">📤 截圖並分享</button>
-      <button @click="shareLink">🔗 分享網址</button>
+      <button @click="saveScreenshot">儲存截圖</button>
+      <button @click="shareScreenshot">截圖並分享</button>
+      <button @click="shareLink"> 分享網址</button>
     </div>
 
     <div class="capture-area">
-      <h2>🎨 我的網頁截圖範例</h2>
-      <p>這區的內容會被截圖、儲存或分享。</p>
-      <KV />
+      <Share />
+
     </div>
   </div>
 </template>

@@ -3,7 +3,8 @@
 @media (max-width: 1200px) {
 .bag { top: 1700px; right: 20%; }
 .bear_bag { top: 1990px; left: 10%; }
-  .p4_area {margin-top: -200px;}
+.p4_area {margin-top: -200px;}
+.p4-img{    margin-top: -1000px; }
 .p4-img img { width: 70%;}
 .part2_center{ }
 .center_line{
@@ -20,6 +21,7 @@
       width: 80%; 
    
 }
+.part3-q{    background-position: 0% 100%;}
 .s-logo1{ 
   width: 50%; 
   padding-top:40px;
@@ -71,10 +73,16 @@
 
 
 .p2_rec{ font-size: 22px; width: 90%;}
-.p3-rec{ font: 22px; width: 90%;}
+.p3-rec{ font: 22px; width: 90%; font-size: 22px;}
 .cell_hide{ display: none;}
 .computer_hide { display: block;}
+.penguin3{   margin-right: -200px; }
+.penguin3 img{width: 141px;     margin-bottom: -36px;
+}
 
+
+
+.p4-img{margin-top: -1200px;}
 .center_line{
 
 }
@@ -89,11 +97,20 @@
  .bear_bag img{width: 150px; padding: 40px 0px;}
 
  .part2_top{ font-size: 1rem;}
+ 
+.part2_center img { 
+  max-width: 80%;
+  height: auto;
+}
+
+.part2_lower{ margin-top: 0px;}
 /* *p3** */
 .part3{   margin-top: 0px;}
 
   /* .part3-ckeck{ margin-top: 700px;} */
-.green_btn{ width: 100%;}
+
+  
+.green_btn{ }
  .step_img img{ width:100% ;} 
  .step{ width: 100%;}
 .p3-ice{ width: 100%;}
@@ -109,7 +126,7 @@
         padding-top: 50px;
     }
 .bear3-3 img{ width: 120px;}
-.penguin3{ margin-top: 200px;  margin-top: 200px; margin-right: -320px;}
+.penguin3{   margin-right: -350px;}
 .tru img {
     right: -40px;
         top: 35px;
@@ -120,16 +137,25 @@
    /* .bear-left {margin-top: 150px !important;} */
  /* .bear-left img{width: 180px;}
 .bear_step{margin-top: 100px !important;} */
+.p4-img {margin-top: -1500px;}
 .p4-img img{ width: 80%;}
 .key1{  position: relative;  
    padding-bottom: 50px;  
    left: auto;
    margin-left: auto;
 } 
+
+.health{ padding: 0px 0px 100px 0px; width: 80%; text-align: center; margin: 0 auto;}
+.part3_treasure{
+    height: auto;
+  }
+
 .health img{ width: 100%; }
 
+.point_left{ display: none;}
+.point_right{ display: none;}
 select{ width: 80%;}
-.p4-rec{ width: 80%; padding: 50px 0px;}
+.p4-rec{ width: 80%; }
 /* .pt-200{ padding-top: 0px ; margin-top: 300px;} */
 .p4_area{margin-top: -50px;}
 .mt-100{ margin-top: 50px;}
@@ -137,9 +163,13 @@ select{ width: 80%;}
 
 .s1_img img{
   margin-top: -250px;
-}
-
+.wish2{padding-top: auto;}
 } 
-
-
+.wish1{ width: 100%;}
+/**************480px**************/
+@media (max-width: 480px) {
+      .p4-img {
+        margin-top: -1300px;
+    }
+}
 

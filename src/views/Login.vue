@@ -1,5 +1,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
+import KVL from '../components/KVL.vue'
+
 const router = useRouter()
 
 function goToHome() {
@@ -10,31 +12,19 @@ function goToHome() {
 <template>
 
 <section class="">
-<!-- 天空 -->
-<div class="sky_wrap">
-  <img src="@/assets/images/p4_bg.png">
-</div>  
 
+<KVL />
 <div class="login_wrap">
   <div class="container ">
-<div class="bears_login">
-  
-  <img src="@/assets/images/p4_top.png">
-
-</div>
-
-
   <div class="login_btn1" >
   <div class="center" > 
-  <div class="col-6 font-c font36">
-      <button @click="goToHome" class="btn_y">保戶</button>   
+  <div class="col-6 c-font font36">
+      <button @click="goToHome" class="btn_y">登入回顧</button>   
   </div> 
-  <div class="col-6 font-c font36"> 
-      <button @click="$router.push('/new')" class="btn_y">非保戶</button>
-  </div>
   </div>
 
-  <p class="mt-3">冒險已經展開，快跟白白一起出發！</p>
+  <p class="mt-3  black-color n-font
+">冒險已經展開，快跟白白一起出發！</p>
 </div> 
 
 

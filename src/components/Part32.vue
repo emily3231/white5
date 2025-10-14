@@ -1,5 +1,6 @@
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useTypingEffect } from '@/composables/useTypingEffect' // ✅ 共用打字特效
 
 // 題庫
 const bank = [
@@ -25,174 +26,186 @@ const bank = [
     title: '題目四: 北極熊是不是靠運氣生活？',
     prompt: '北極熊是不是靠運氣生活？（Yes / No）',
     answer:
-      '不是的，北極熊不會原地等待食物到來，而是會巡視好幾個地點尋找食物。這種分散風險的行為，就像保險一樣，透過支付保費，把風險轉移給保險公司，讓大家分攤損失，避免個人承受重大財務壓力。'
+      '不是的，北極熊不會原地等待食物到來，而是會巡視好幾個地點尋找食物。這種分散風險的行為，就像保險一樣，透過支付保費，把風險轉移給保險公司，讓大家分攤損失。'
   },
   {
     title: '題目五: 北極熊口渴會喝水嗎？',
     prompt: '北極熊口渴會喝水嗎？（Yes / No）',
     answer:
-      '幾乎不會！北極熊不太需要喝水，分解脂肪的化學反應來獲取水份喔！保險就像牠的毛皮，隨著季節換裝，隨著人生階段調整，才是聰明熊的選擇！'
+      '幾乎不會！北極熊不太需要喝水，分解脂肪的化學反應來獲取水份喔！保險就像牠的毛皮，隨著季節換裝、隨著人生階段調整，才是聰明熊的選擇！'
   }
 ]
 
-// 狀態
+// ✅ 共用打字特效 composable
+const { displayedText, showCursor, cursorDimmed, typeText } = useTypingEffect(35, 400)
+
+// ✅ 狀態
 const phase = ref('intro') // intro → question → answer → reward
 const currentQuestion = ref(null)
-const displayText = ref('')
 const isTyping = ref(false)
-const fullText = ref('')
-const charIndex = ref(0)
-const speed = 35
-let timer = null
 
-// 打字音效
+// ✅ 音效（可選）
 const typeSound = new Audio('/sounds/type.mp3')
-typeSound.volume = 0.15
+typeSound.volume = 0.1
 
-function startTypewriter(text, callback) {
-  clearTimer()
-  fullText.value = text
-  displayText.value = ''
-  charIndex.value = 0
-  isTyping.value = true
-
-  timer = setInterval(() => {
-    if (charIndex.value < fullText.value.length) {
-      displayText.value += fullText.value.charAt(charIndex.value)
-      charIndex.value++
-
-      try {
-        const soundClone = typeSound.cloneNode()
-        soundClone.play().catch(() => {})
-      } catch {}
-    } else {
-      stopTypewriter()
-      if (callback) callback()
-    }
-  }, speed)
-}
-
-function skipTypewriter() {
-  if (!isTyping.value) return
-  displayText.value = fullText.value
-  stopTypewriter()
-}
-
-function stopTypewriter() {
-  isTyping.value = false
-  clearTimer()
-}
-
-function clearTimer() {
-  if (timer) {
-    clearInterval(timer)
-    timer = null
+// 點擊跳過
+const skipTyping = () => {
+  // 若正在打字，就立即顯示完整文字
+  if (isTyping.value) {
+    displayedText.value = displayedText.value // 保留現有內容
   }
 }
 
+// 隨機出題
 function getRandomQuestion() {
   const index = Math.floor(Math.random() * bank.length)
   return bank[index]
 }
 
-// 流程控制
+// ✅ 流程控制
 function toQuestion() {
   currentQuestion.value = getRandomQuestion()
   phase.value = 'question'
-  startTypewriter(currentQuestion.value.prompt)
+  startTyping(currentQuestion.value.prompt)
 }
 
 function answer() {
   phase.value = 'answer'
-  startTypewriter(currentQuestion.value.answer, () => {
-    // 顯示完答案後進入送禮畫面
-    setTimeout(() => {
-      phase.value = 'reward'
-    }, 1000)
+  startTyping(currentQuestion.value.answer, () => {
+    setTimeout(() => (phase.value = 'reward'), 1000)
   })
 }
 
 function restart() {
   phase.value = 'intro'
-  displayText.value = ''
   startIntro()
 }
 
+// ✅ 啟動打字（帶音效）
+function startTyping(text, callback) {
+  displayedText.value = ''
+  isTyping.value = true
+  typeText(text)
+  playTypingSound()
+  setTimeout(() => {
+    isTyping.value = false
+    if (callback) callback()
+  }, text.length * 35 + 400) // 根據字數估算結束時間
+}
+
+// ✅ 開場白
 function startIntro() {
-  startTypewriter('我是企鵝先生，白白的好友兼情境導演～現在，要來問你一個問題：你準備好了嗎？')
+  startTyping('我是企鵝先生，白白的好友兼情境導演～現在，要來問你一個問題：你準備好了嗎？')
+}
+
+function playTypingSound() {
+  const soundClone = typeSound.cloneNode()
+  soundClone.play().catch(() => {})
 }
 
 onMounted(() => startIntro())
-onBeforeUnmount(() => clearTimer())
+
+
+const emit = defineEmits(['goNextSection']) // ✅ 定義可發送事件
+
+function goNext() {
+  emit('goNextSection') // ✅ 通知父層 Home.vue
+}
 </script>
 
 <template>
-  <div class=" part3-q">
-    <h2 class="mb-4 green-color font50 pt-100 c-font">＼問問題挑戰／</h2>
-    <p class="font24 black-color  c-font">嘿！想要寶物嗎？先答我一題！</p>
-    <div class="bear3-3"><img src="@/assets/images/bear3-3.png" ></div>
+  <div class="part3-q">
+    <h2 class="mb-4 green-color font50 c-font">＼問問題挑戰／</h2>
+    <p class="font24 black-color c-font">嘿！想要寶物嗎？先答我一題！</p>
 
+    <div class="bear3-3"><img src="@/assets/images/bear3-3.png" /></div>
     <div class="penguin3"><img src="@/assets/images/penguin3.gif" /></div>
-    <div class="point_right"><img src="@/assets/images/point.png" /></div>
-     
-  <div class="p3-rec">
-    <div class="quiz">
-      <!-- 開場 -->
-      <section v-if="phase === 'intro'">
-        <p class="text" @click="skipTypewriter">{{ displayText }}</p>
-        <button class="green_btn  c-font" @click="toQuestion" :disabled="isTyping">開始作答</button>
-      </section>
 
-      <!-- 題目 -->
-      <section v-else-if="phase === 'question'">
-        <h3>{{ currentQuestion.title }}</h3>
-        <p class="text c-font" @click="skipTypewriter">{{ displayText }}</p>
-        <div class="buttons ">
-          <button class="green_btn c-font" @click="answer" :disabled="isTyping">Yes</button>
-          <button class="green_btn c-font" @click="answer" :disabled="isTyping">No</button>
+    <div class="">
+         <div class="point_left"><img src="@/assets/images/point.png" /></div>
+         <div class="point_right">
+            <img src="@/assets/images/point.png">
         </div>
-      </section>
+      <div class="quiz">
+        <!-- 開場 -->
+        <section class="p3-rec" v-if="phase === 'intro'">
+          <p class="text c-font" @click="skipTyping">
+            {{ displayedText }}
+            <!-- <span v-if="showCursor" class="cursor" :class="{ dim: cursorDimmed }">|</span> -->
+          </p>
+          <button class="green_btn c-font" @click="toQuestion">開始作答</button>
+        </section>
 
-      <!-- 解答 -->
-      <section v-else-if="phase === 'answer'">
-        <p class="text" @click="skipTypewriter">{{ displayText }}</p>
-      </section>
-
-      <!-- 結束送東西 -->
-      <section v-else-if="phase === 'reward'" class="reward">
-        <h2 class=" c-font"> 恭喜你！</h2>
-        <p class=" c-font">你獲得了「1 點小樹點數」！</p>
-        <img src="@/assets/images/point.png" class="reward-img" />
-        <button class="green_btn" @click="restart">再玩一次</button>
-      </section>
-    </div>
-    </div>
-         <div class="penguin">
-            <div class="penguin3-1">
-                <div class="point_left">
-                  <img src="@/assets/images/point.png" >
-                </div> 
-                <div class="penguin3-1">
-                 <img src="@/assets/images/penguin3-1.png" >
-                </div>
-              </div>
-
-              <div class="center">
-              <div class="key"><img src="@/assets/images/penguin_left.png" ></div>
-              <div class="point">
-                <!-- <div class=" font24 nfont">\ 恭喜獲得 1點小樹點 /</div> -->
-                <img src="@/assets/images/penguin_right.png" ></div>
-              <p class="font24 c-font black-color">答得漂亮，補給到手，繼續走！</p>
+        <!-- 題目 -->
+        <section class="p3-rec" v-else-if="phase === 'question'">
+          <h3 class="c-font">{{ currentQuestion.title }}</h3>
+          <p class="text c-font" @click="skipTyping">
+            {{ displayedText }}
+            <!-- <span v-if="showCursor" class="cursor" :class="{ dim: cursorDimmed }">|</span> -->
+          </p>
+          <div class="buttons">
+            <button class="green_btn c-font" @click="answer">Yes</button>
+            <button class="green_btn c-font" @click="answer">No</button>
           </div>
-        </div>
-  </div>
+        </section>
 
+        <!-- 解答 -->
+        <section  class="p3-rec" v-else-if="phase === 'answer'">
+          <p class="text c-font" @click="skipTyping">
+            {{ displayedText }}
+            <!-- <span v-if="showCursor" class="cursor" :class="{ dim: cursorDimmed }">|</span> -->
+          </p>
+        </section>
+
+        <!-- 獎勵 -->
+        <section v-else-if="phase === 'reward'" class="reward">
+
+          <div  class="p3-rec">
+          <h2 class="c-font">恭喜你！</h2>
+          <p class="c-font">你獲得了「1 點小樹點數」！</p>
+              <div class="next-icon c-font" @click="goNext">下一步 ▼ </div>
+          </div>
+
+     <!-- <div class="penguin"> -->
+      <div class="penguin3-1">
+     
+        <div class="penguin3-1"><img src="@/assets/images/penguin3-1.png" /></div>
+      </div>
+      <div class="center">
+        <div class="key"><img src="@/assets/images/penguin_left.png" /></div>
+        <div class="point"><img src="@/assets/images/penguin_right.png" /></div>
+        <p class="font24 n-font black-color">答得漂亮，補給到手，繼續走！</p>
+
+      </div>
+    <!-- </div> -->
+          
+          <!-- <img src="@/assets/images/point.png" class="reward-img" />
+          <button class="green_btn" @click="restart">再玩一次</button> -->
+        </section>
+
+        
+      </div>
+    </div>
+
+   
+  </div>
 </template>
 
 <style scoped>
-.point{ color: black;}
-/* .penguin3-1 img{ width: 258px;} */
-.reward {
+.cursor {
+  display: inline-block;
+  width: 8px;
+  animation: blink 0.8s infinite;
+}
+.cursor.dim {
+  opacity: 0.3;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+/* .reward {
   text-align: center;
   animation: fadeIn 0.8s ease;
 }
@@ -200,7 +213,7 @@ onBeforeUnmount(() => clearTimer())
   width: 200px;
   margin: 20px auto;
   display: block;
-}
+} */
 @keyframes fadeIn {
   from {
     opacity: 0;
