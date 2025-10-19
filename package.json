@@ -6,16 +6,17 @@
   "engines": {
     "node": "^20.19.0 || >=22.12.0"
   },
-  "homepage": "https://emily3231.github.io/white4",
+  "homepage": "https://emily3231.github.io/white5",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "cross-env VITE_CUSTOM_DOMAIN=true vite build",
     "preview": "vite preview",
-    "deploy": "npx gh-pages -d dist -b gh-pages -r https://github.com/emily3231/white4.git",
+    "deploy": "npx gh-pages -d dist -b gh-pages -r https://github.com/emily3231/white5.git",
     "deploy-fix": "git checkout main && git branch -D gh-pages 2>nul || echo no branch && git push origin --delete gh-pages 2>nul || echo no remote && npm run build && git checkout --orphan gh-pages && git --work-tree dist add --all && git --work-tree dist commit -m \"Deploy new version\" && git push origin HEAD:gh-pages --force && git checkout main"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.1",
+    "cross-env": "^10.1.0",
     "gh-pages": "^6.3.0",
     "vite": "^7.1.9",
     "vite-plugin-vue-devtools": "^8.0.2"
